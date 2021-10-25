@@ -4,9 +4,9 @@ namespace LegacyApp
 {
     public class UserService
     {
-        public bool AddUser(string firstName, string surname, string email, DateTime dateOfBirth, int clientId)
+        public bool AddUser(string firName, string surname, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(surname))
+            if (string.IsNullOrEmpty(firName) || string.IsNullOrEmpty(surname))
             {
                 return false;
             }
@@ -33,7 +33,7 @@ namespace LegacyApp
                 Client = client,
                 DateOfBirth = dateOfBirth,
                 EmailAddress = email,
-                FirstName = firstName,
+                FirstName = firName,
                 Surname = surname
             };
 
