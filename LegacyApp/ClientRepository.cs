@@ -34,12 +34,10 @@ namespace LegacyApp
                 var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
                 while (reader.Read())
                 {
-                    client = new Client
-                    {
-                        Id = int.Parse(reader[cliendId].ToString()),
-                        Name = reader[name].ToString(),
-                        ClientStatus = (ClientStatus)int.Parse(clientStatus)
-                    };
+                    client = new Client(
+                        int.Parse(reader[cliendId].ToString()), 
+                        reader[name].ToString(), 
+                        (ClientStatus)int.Parse(clientStatus));
                 }
             }
 

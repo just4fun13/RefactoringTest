@@ -4,6 +4,8 @@ namespace LegacyApp
 {
     public class UserService
     {
+        private int creditLimit = 500;
+
         public bool AddUser(string firName, string surname, string email, DateTime dateOfBirth, int clientId)
         {
             if (string.IsNullOrEmpty(firName) || string.IsNullOrEmpty(surname))
@@ -28,34 +30,16 @@ namespace LegacyApp
             var clientRepository = new ClientRepository();
             var client = clientRepository.GetById(clientId);
 
-            var user = new User
-            {
-                Client = client,
-                DateOfBirth = dateOfBirth,
-                EmailAddress = email,
-                FirstName = firName,
-                Surname = surname
-            };
+            var user = new User(client, dateOfBirth, email, firName, surname);
 
-            if (client.Name == "VeryImportantClient")
+            
+            if (client.IsVip)
             {
                 // Пропустить проверку лимита
                 user.HasCreditLimit = false;
             }
-            else if (client.Name == "ImportantClient")
-            {
-                // Проверить лимит и удвоить его
-                user.HasCreditLimit = true;
-                using (var userCreditService = new UserCreditServiceClient())
-                {
-                    var creditLimit = userCreditService.GetCreditLimit(user.FirstName, user.Surname, user.DateOfBirth);
-                    creditLimit = creditLimit * 2;
-                    user.CreditLimit = creditLimit;
-                }
-            }
             else
             {
-                // Проверить лимит
                 user.HasCreditLimit = true;
                 using (var userCreditService = new UserCreditServiceClient())
                 {
@@ -64,7 +48,11 @@ namespace LegacyApp
                 }
             }
 
-            if (user.HasCreditLimit && user.CreditLimit < 500)
+            if (client.IsIp)
+                user.CreditLimit *= 2;
+   
+
+            if (user.HasCreditLimit && user.CreditLimit < creditLimit)
             {
                 return false;
             }
@@ -73,5 +61,7 @@ namespace LegacyApp
 
             return true;
         }
+
+
     }
 }
