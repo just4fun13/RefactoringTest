@@ -6,10 +6,17 @@ namespace LegacyApp
 {
     public class ClientRepository
     {
+        private readonly string baseName = "appDatabase";
+        private readonly string getClientCommandText = "uspGetClientById";
+        private readonly string cliendId = "ClientId";
+        private readonly string toCliendId = "@ClientId";
+        private readonly string name = "Name";
+        private readonly string clientStatus = "ClientStatus";
+
         public Client GetById(int id)
         {
             Client client = null;
-            var connectionString = ConfigurationManager.ConnectionStrings["appDatabase"].ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings[baseName].ConnectionString;
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -17,10 +24,10 @@ namespace LegacyApp
                 {
                     Connection = connection,
                     CommandType = CommandType.StoredProcedure,
-                    CommandText = "uspGetClientById"
+                    CommandText = getClientCommandText
                 };
 
-                var parameter = new SqlParameter("@ClientId", SqlDbType.Int) { Value = id };
+                var parameter = new SqlParameter(toCliendId, SqlDbType.Int) { Value = id };
                 command.Parameters.Add(parameter);
                 
                 connection.Open();
@@ -29,9 +36,9 @@ namespace LegacyApp
                 {
                     client = new Client
                     {
-                        Id = int.Parse(reader["ClientId"].ToString()),
-                        Name = reader["Name"].ToString(),
-                        ClientStatus = (ClientStatus)int.Parse("ClientStatus")
+                        Id = int.Parse(reader[cliendId].ToString()),
+                        Name = reader[name].ToString(),
+                        ClientStatus = (ClientStatus)int.Parse(clientStatus)
                     };
                 }
             }
