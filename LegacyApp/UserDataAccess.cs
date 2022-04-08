@@ -7,6 +7,15 @@ namespace LegacyApp
 {
     public class UserDataAccess
     {
+        private const string firstNameParam = "@Firstname";
+        private const string surnameParam = "@Surname";
+        private const string dataOfBirthParam = "@DateOfBirth";
+        private const string emailParam = "@EmailAddress";
+        private const string hasCreditLimitParam = "@HasCreditLimit";
+        private const string creditLimitValParam = "@CreditLimit";
+        private const string clientIdParam = "@ClientId";
+        private const string command = "uspAddUser";
+
         public static void AddUser(User user)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["appDatabase"].ConnectionString;
@@ -17,22 +26,22 @@ namespace LegacyApp
                 {
                     Connection = connection,
                     CommandType = CommandType.StoredProcedure,
-                    CommandText = "uspAddUser"
+                    CommandText = UserDataAccess.command
                 };
 
-                var firstNameParameter = new SqlParameter("@Firstname", SqlDbType.VarChar, 50) {Value = user.FirstName};
+                var firstNameParameter = new SqlParameter(firstNameParam, SqlDbType.VarChar, 50) {Value = user.FirstName};
                 command.Parameters.Add(firstNameParameter);
-                var surnameameParameter = new SqlParameter("@Surname", SqlDbType.VarChar, 50) {Value = user.Surname};
+                var surnameameParameter = new SqlParameter(surnameParam, SqlDbType.VarChar, 50) {Value = user.Surname};
                 command.Parameters.Add(surnameameParameter);
-                var dateOfBirthParameter = new SqlParameter("@DateOfBirth", SqlDbType.DateTime) {Value = user.DateOfBirth};
+                var dateOfBirthParameter = new SqlParameter(dataOfBirthParam, SqlDbType.DateTime) {Value = user.DateOfBirth};
                 command.Parameters.Add(dateOfBirthParameter);
-                var emailAddressParameter = new SqlParameter("@EmailAddress", SqlDbType.VarChar, 50) {Value = user.EmailAddress};
+                var emailAddressParameter = new SqlParameter(emailParam, SqlDbType.VarChar, 50) {Value = user.EmailAddress};
                 command.Parameters.Add(emailAddressParameter);
-                var hasCreditLimitParameter = new SqlParameter("@HasCreditLimit", SqlDbType.Bit) {Value = user.HasCreditLimit};
+                var hasCreditLimitParameter = new SqlParameter(hasCreditLimitParam, SqlDbType.Bit) {Value = user.HasCreditLimit};
                 command.Parameters.Add(hasCreditLimitParameter);
-                var creditLimitParameter = new SqlParameter("@CreditLimit", SqlDbType.Int) {Value = user.CreditLimit};
+                var creditLimitParameter = new SqlParameter(creditLimitValParam, SqlDbType.Int) {Value = user.CreditLimit};
                 command.Parameters.Add(creditLimitParameter);
-                var clientIdParameter = new SqlParameter("@ClientId", SqlDbType.Int) {Value = user.Client.Id};
+                var clientIdParameter = new SqlParameter(clientIdParam, SqlDbType.Int) {Value = user.Client.Id};
                 command.Parameters.Add(clientIdParameter);
 
                 command.ExecuteScalar();

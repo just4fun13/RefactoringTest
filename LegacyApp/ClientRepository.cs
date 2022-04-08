@@ -6,12 +6,12 @@ namespace LegacyApp
 {
     public class ClientRepository
     {
-        private readonly string baseName = "appDatabase";
-        private readonly string getClientCommandText = "uspGetClientById";
-        private readonly string cliendId = "ClientId";
-        private readonly string toCliendId = "@ClientId";
-        private readonly string name = "Name";
-        private readonly string clientStatus = "ClientStatus";
+        private const string baseName = "appDatabase";
+        private const string getClientCommandText = "uspGetClientById";
+        private const string cliendId = "ClientId";
+        private const string toCliendId = "@ClientId";
+        private const string name = "Name";
+        private const string clientStatus = "ClientStatus";
 
         public Client GetById(int id)
         {
