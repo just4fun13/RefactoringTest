@@ -9,7 +9,7 @@ namespace LegacyApp
 
         private bool NameIsNull(string name, string anotherName) => (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(anotherName));
 
-        private bool MailIsValid(string mail) => (!mail.Contains("@") && !mail.Contains("."));
+        private bool MailIsInvalid(string mail) => (!mail.Contains("@") && !mail.Contains("."));
 
         private int GetAge(DateTime dateOfBirth)
         {
@@ -22,7 +22,7 @@ namespace LegacyApp
         public bool AddUser(string firName, string surname, string email, DateTime dateOfBirth, int clientId)
         {
 
-            if (NameIsNull(firName, surname) || !MailIsValid(email) || (GetAge(dateOfBirth) < requiredAge))
+            if (NameIsNull(firName, surname) || MailIsInvalid(email) || (GetAge(dateOfBirth) < requiredAge))
                 return false;
 
 
