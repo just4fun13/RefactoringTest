@@ -5,31 +5,30 @@ namespace LegacyApp
     public class UserService
     {
         private int creditLimit = 500;
+        private int requiredAge = 21;
 
-        public bool AddUser(string firName, string surname, string email, DateTime dateOfBirth, int clientId)
+        private bool NameIsNull(string name, string anotherName) => (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(anotherName));
+
+        private bool MailIsValid(string mail) => (!mail.Contains("@") && !mail.Contains("."));
+
+        private int GetAge(DateTime dateOfBirth)
         {
-            if (string.IsNullOrEmpty(firName) || string.IsNullOrEmpty(surname))
-            {
-                return false;
-            }
-
-            if (!email.Contains("@") && !email.Contains("."))
-            {
-                return false;
-            }
-
             var now = DateTime.Now;
             int age = now.Year - dateOfBirth.Year;
             if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
+            return age;
+        }
 
-            if (age < 21)
-            {
+        public bool AddUser(string firName, string surname, string email, DateTime dateOfBirth, int clientId)
+        {
+
+            if (NameIsNull(firName, surname) || !MailIsValid(email) || (GetAge(dateOfBirth) < requiredAge))
                 return false;
-            }
+
+
 
             var clientRepository = new ClientRepository();
             var client = clientRepository.GetById(clientId);
-
             var user = new User(client, dateOfBirth, email, firName, surname);
 
             
