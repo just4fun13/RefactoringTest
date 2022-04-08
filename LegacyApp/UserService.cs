@@ -9,7 +9,7 @@ namespace LegacyApp
 
         private bool NameIsNull(string name, string anotherName) => (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(anotherName));
 
-        private bool MailIsInvalid(string mail) => (!mail.Contains("@") && !mail.Contains("."));
+        private bool MailIsInvalid(string mail) => (!mail.Contains("@") || !mail.Contains("."));
 
         private int GetAge(DateTime dateOfBirth)
         {
